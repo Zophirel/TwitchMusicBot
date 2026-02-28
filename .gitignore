@@ -12,5 +12,4 @@ packages/**/dev.db
 packages/**/dev.db-journal
 packages/**/dev.db-wal
 packages/**/dev.db-shm
-installer/Output/
-installer/vendor/
+installer
