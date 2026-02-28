@@ -22,6 +22,15 @@
         </div>
       </div>
 
+      <div v-if="store.updateInfo?.updateAvailable" class="update-banner">
+        <div class="label">Update Available</div>
+        <div class="title">New version detected.</div>
+        <div class="meta">
+          Latest: {{ store.updateInfo.latestSha.slice(0, 7) }} · Current:
+          {{ store.updateInfo.currentSha?.slice(0, 7) ?? "unknown" }}
+        </div>
+      </div>
+
       <div class="controls">
         <button class="primary" :disabled="!store.isAdmin" @click="store.startPlayback()">
           Start
@@ -204,6 +213,14 @@ async function moveQueue(index: number, delta: number) {
   padding: 16px 18px;
   background: rgba(239, 125, 59, 0.08);
   border-radius: 16px;
+}
+
+.update-banner {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(58, 99, 224, 0.12);
+  border: 1px solid rgba(58, 99, 224, 0.25);
 }
 
 .now-playing .label {

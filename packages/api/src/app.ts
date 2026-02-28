@@ -63,6 +63,46 @@ const devicePollSchema = z.object({
   deviceCode: z.string().min(1)
 });
 
+type UpdateInfo = {
+  repo: string;
+  latestSha: string;
+  currentSha: string | null;
+  updateAvailable: boolean;
+  compareUrl: string | null;
+};
+
+function parseRepoSlug(repoUrl: string) {
+  try {
+    const url = new URL(repoUrl);
+    const parts = url.pathname.replace(/\.git$/, "").split("/").filter(Boolean);
+    if (parts.length >= 2) {
+      return `${parts[0]}/${parts[1]}`;
+    }
+  } catch {
+    // ignore
+  }
+  return null;
+}
+
+async function fetchLatestCommit(repoUrl: string) {
+  const slug = parseRepoSlug(repoUrl);
+  if (!slug) {
+    return null;
+  }
+  const response = await fetch(`https://api.github.com/repos/${slug}/commits?per_page=1`, {
+    headers: { "User-Agent": "musicbot-update-check" }
+  });
+  if (!response.ok) {
+    return null;
+  }
+  const data = (await response.json()) as Array<{ sha: string }>;
+  const sha = data[0]?.sha;
+  if (!sha) {
+    return null;
+  }
+  return { slug, sha };
+}
+
 const reorderSchema = z.object({
   ids: z.array(z.string().min(1)).min(1)
 });
@@ -151,6 +191,34 @@ export function createApp(options: AppOptions = {}) {
       const state = await getQueueState(prisma);
       res.set("Cache-Control", "no-store");
       return res.json(state);
+    } catch (error) {
+      return next(error);
+    }
+  });
+
+  app.get("/api/update", async (_req, res, next) => {
+    try {
+      const repoUrl = config.updateRepoUrl;
+      if (!repoUrl) {
+        return res.json({ updateAvailable: false, reason: "no_repo_configured" });
+      }
+      const latest = await fetchLatestCommit(repoUrl);
+      if (!latest) {
+        return res.json({ updateAvailable: false, reason: "fetch_failed" });
+      }
+
+      const currentSha = config.updateCurrentSha ?? null;
+      const updateAvailable = Boolean(currentSha && currentSha !== latest.sha);
+      const payload: UpdateInfo = {
+        repo: latest.slug,
+        latestSha: latest.sha,
+        currentSha,
+        updateAvailable,
+        compareUrl: currentSha
+          ? `https://github.com/${latest.slug}/compare/${currentSha}...${latest.sha}`
+          : null
+      };
+      return res.json(payload);
     } catch (error) {
       return next(error);
     }

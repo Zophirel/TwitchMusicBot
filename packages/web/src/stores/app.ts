@@ -34,6 +34,14 @@ export type QueueState = {
   settings: Settings;
 };
 
+export type UpdateInfo = {
+  repo: string;
+  latestSha: string;
+  currentSha: string | null;
+  updateAvailable: boolean;
+  compareUrl: string | null;
+};
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "";
 
 export const useAppStore = defineStore("app", {
@@ -55,6 +63,7 @@ export const useAppStore = defineStore("app", {
     csrfToken: null as string | null,
     socketConnected: false,
     socket: null as Socket | null,
+    updateInfo: null as UpdateInfo | null,
     pollTimer: null as number | null
   }),
   actions: {
@@ -68,6 +77,7 @@ export const useAppStore = defineStore("app", {
         await this.fetchQueue();
         this.csrfToken = readCookie("csrf_token");
         this.connectSocket();
+        await this.fetchUpdateInfo();
         this.startPolling();
         this.initialized = true;
       } catch (error) {
@@ -118,6 +128,13 @@ export const useAppStore = defineStore("app", {
       this.nowPlaying = state.nowPlaying;
       this.queue = state.queue;
       this.settings = state.settings;
+    },
+    async fetchUpdateInfo() {
+      try {
+        this.updateInfo = await apiRequest<UpdateInfo | { updateAvailable: false }>("/api/update");
+      } catch {
+        this.updateInfo = null;
+      }
     },
     async login(password: string) {
       await apiRequest("/api/admin/login", {
