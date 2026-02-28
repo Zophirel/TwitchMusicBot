@@ -204,8 +204,10 @@ onMounted(async () => {
         return;
       }
       const state = activePlayer.getPlayerState();
-      const duration = activePlayer.getDuration();
-      const current = activePlayer.getCurrentTime();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const duration = (activePlayer as any).getDuration();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const current = (activePlayer as any).getCurrentTime();
       if (state === 0 || (duration > 0 && current >= duration - 0.5)) {
         emitEndedOnce();
         return;
