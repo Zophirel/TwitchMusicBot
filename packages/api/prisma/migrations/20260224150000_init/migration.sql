@@ -1,0 +1,17 @@
+-- CreateTable
+CREATE TABLE "SongRequest" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "twitchUser" TEXT NOT NULL,
+  "query" TEXT NOT NULL,
+  "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "youtubeVideoId" TEXT NOT NULL,
+  "youtubeTitle" TEXT NOT NULL,
+  "status" TEXT NOT NULL DEFAULT 'QUEUED'
+);
+
+-- CreateTable
+CREATE TABLE "Settings" (
+  "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "autoplay" BOOLEAN NOT NULL DEFAULT 0,
+  "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

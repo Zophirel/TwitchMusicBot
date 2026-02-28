@@ -1,0 +1,8 @@
+CREATE TABLE "TwitchAuth" (
+  "id" INTEGER NOT NULL PRIMARY KEY DEFAULT 1,
+  "accessToken" TEXT NOT NULL,
+  "refreshToken" TEXT NOT NULL,
+  "scope" TEXT,
+  "expiresAt" DATETIME NOT NULL,
+  "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

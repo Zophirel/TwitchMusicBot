@@ -1,0 +1,23 @@
+{
+  "name": "@musicbot/bot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "token:test": "tsx scripts/token-test.ts",
+    "lint": "echo \"TODO: add lint\"",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "dotenv": "*",
+    "tmi.js": "*"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "tsx": "*",
+    "typescript": "*",
+    "vitest": "*"
+  }
+}

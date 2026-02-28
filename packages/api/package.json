@@ -1,0 +1,45 @@
+{
+  "name": "@musicbot/api",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "prisma generate && tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "test:youtube": "tsx scripts/check-youtube.ts",
+    "test:twitch": "tsx scripts/check-twitch.ts",
+    "twitch:device": "tsx scripts/twitch-device.ts",
+    "twitch:whoami": "tsx scripts/twitch-whoami.ts",
+    "twitch:clear": "tsx scripts/twitch-clear.ts",
+    "lint": "echo \"TODO: add lint\"",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.0",
+    "cookie-parser": "*",
+    "cors": "*",
+    "dotenv": "*",
+    "express": "*",
+    "express-rate-limit": "*",
+    "helmet": "*",
+    "jsonwebtoken": "*",
+    "socket.io": "*",
+    "zod": "*"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "*",
+    "@types/express": "*",
+    "@types/jsonwebtoken": "*",
+    "@types/node": "*",
+    "@types/supertest": "*",
+    "prisma": "^6.0.0",
+    "supertest": "*",
+    "tsx": "*",
+    "typescript": "*",
+    "vitest": "*"
+  }
+}

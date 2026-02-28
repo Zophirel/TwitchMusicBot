@@ -1,0 +1,26 @@
+{
+  "name": "musicbot",
+  "private": true,
+  "packageManager": "npm@10",
+  "workspaces": [
+    "packages/*"
+  ],
+  "volta": {
+    "node": "24.13.1",
+    "npm": "11.8.0"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n api,web,bot -c green,blue,magenta \"npm run -w @musicbot/api dev\" \"npm run -w @musicbot/web dev\" \"npm run dev:bot\"",
+    "dev:bot": "wait-on -t 60000 http-get://127.0.0.1:3000/api/queue && npm run -w @musicbot/bot dev",
+    "bot:token": "npm run -w @musicbot/bot token:test",
+    "build": "npm run --workspaces --if-present build",
+    "start": "concurrently -k -n api,bot -c green,magenta \"npm run -w @musicbot/api start\" \"npm run -w @musicbot/bot start\"",
+    "lint": "npm run --workspaces --if-present lint",
+    "test": "npm run --workspaces --if-present test"
+  },
+  "devDependencies": {
+    "@vitest/utils": "^4.0.18",
+    "concurrently": "^9.2.1",
+    "wait-on": "^8.0.5"
+  }
+}

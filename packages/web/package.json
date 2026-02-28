@@ -1,0 +1,24 @@
+{
+  "name": "@musicbot/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "echo \"TODO: add lint\"",
+    "test": "echo \"TODO: add tests\""
+  },
+  "dependencies": {
+    "pinia": "*",
+    "socket.io-client": "*",
+    "vue": "*",
+    "vue-router": "*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "*",
+    "typescript": "*",
+    "vite": "*",
+    "vue-tsc": "*"
+  }
+}
